@@ -1,4 +1,4 @@
-# Big Five Personality Test Website 大五人格測驗網站
+# Big Five Personality Test Website 大五性格測驗網站
 
 ## English
 This is a Big Five Personality Test website is designed to help users discover their personality traits through a simple and engaging test.
@@ -38,7 +38,7 @@ The project utilizes several JavaScript libraries and functions to enhance the u
 - Chart.js: This library is used to create dynamic radar charts that visually represent the results of the personality test.
 - jsPDF: This library is used to generate downloadable PDFs, providing users with a convenient way to save their results.
 - Html2canvas: This library captures the content of the webpage, converts it into a canvas element and places it in the PDF, allowing users to take screenshots of the results.
-- Three.js: This library is used for rendering the 3D heart animation in the footer, adding an engaging and interactive visual element to the site.
+- Three.js: This library is used for rendering the 3D heart animations, adding engaging and interactive visual elements to the site.
 
 ---
 
@@ -51,7 +51,7 @@ The project utilizes several JavaScript libraries and functions to enhance the u
 - **使用者友善介面**：清晰指引，方便使用者開始測驗、睇結果同下載一份簡單嘅 PDF 報吿。
 - **動態結果**：透過雷達圖（五邊形圖）呈現視覺化結果，提供每一個性格特徵嘅詳細描述。
 - **使用者歷史紀錄**：自動儲存過去測驗結果，方便你睇返。
-- **內向/外向百分比**：除咗 OCEAN 呢五個因素之外，仲會計埋你嘅內向/外向百分比，顯示出你有幾咁種意社交。
+- **內向/外向百分比**：除咗 OCEAN 呢五個因素之外，仲會計埋你嘅內向/外向百分比，顯示出你有幾咁鍾意社交。
 - **響應式設計**：適合桌面同電話設備使用。
 
 ### 使用方法
@@ -80,4 +80,4 @@ The project utilizes several JavaScript libraries and functions to enhance the u
 - Chart.js：用嚟創建動態雷達圖（五邊形圖），視覺化呈現測驗結果。
 - jsPDF：用嚟生成 PDF，方便啲直接以檔案儲存測驗結果。
 - html2canvas：用嚟 capture 網頁內容，並且轉換做畫布元素擺喺 PDF，方便截取測驗結果畫面。
-- Three.js：用嚟 render footer 嘅 3D 心形動畫，透過可互動元素增加網站吸引力。
+- Three.js：用嚟 render 3D 心形動畫，透過可互動元素增加網站吸引力。
