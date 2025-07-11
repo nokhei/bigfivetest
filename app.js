@@ -437,7 +437,7 @@ async function calculateResults() {
     const val = document.querySelector(`input[name='q${i}']:checked`);
     if (!val) return;
     const score = q.reverse ? 6 - Number(val.value) : Number(val.value);
-    // Use traitKeyMap to convert current lang trait to an Eng key
+    // Use traitKeyMap to convert current lang traits to Eng keys
     const englishTrait = traitKeyMap[q.trait];
     scores[englishTrait] = (scores[englishTrait] || 0) + score;
     counts[englishTrait] = (counts[englishTrait] || 0) + 1;
@@ -455,16 +455,22 @@ async function calculateResults() {
   };
 
   // Get introvert / extravert percentage
-  const extraversionKey = "Extraversion";
-  const totalPossible = (counts[extraversionKey] || 1) * 5;
-  const rawScore = scores[extraversionKey] || 0;
-  const extravert = (rawScore / totalPossible * 100).toFixed(1);
-  const introvert = (100 - extravert).toFixed(1);
+const extraversionKey = "Extraversion";
+const extraversionCount = counts[extraversionKey] || 1;
+const maxExtraversionScore = extraversionCount * 5;
+const rawScore = scores[extraversionKey] || 0;
 
-  // Display the result
-  displayResults(resultObj);
-  saveToHistory(resultObj, introvert, extravert);
-  document.getElementById("extraInfo").innerText = `Introvert: ${introvert}% | Extravert: ${extravert}%`;
+const extravert = ((rawScore / maxExtraversionScore) * 100).toFixed(1);
+const introvert = (100 - extravert).toFixed(1);
+
+// Display the result
+displayResults(resultObj);
+saveToHistory(resultObj, introvert, extravert);
+const extraInfoText = `${currentLang.startsWith("zh") ? "內向" : "Introvert"}: ${introvert}% | ${currentLang.startsWith("zh") ? "外向" : "Extravert"}: ${extravert}%`;
+const extraInfoTextEn = `Introvert: ${introvert}% | Extravert: ${extravert}%`;
+  document.getElementById("extraInfo").innerText = extraInfoText;
+  document.getElementById("extraInfo").dataset.english = extraInfoTextEn;
+
   document.getElementById("results").style.display = "block";
   document.getElementById("progress").style.width = "100%";
   document.getElementById("progressText").textContent = "100%";
@@ -785,50 +791,68 @@ async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
     
-    pdf.setFontSize(14);
+    // Set the initial Y position
+    let yPos = 15;
+    
+    // Username and title (multi-line supported)
+    pdf.setFontSize(20);
     pdf.setFont("helvetica", "bold");
     const userName = document.getElementById("userName").value || "Anonymous";
-    pdf.text(`Big Five Personality Test Result: ${userName}`, 10, 15);
+    const titleLines = pdf.splitTextToSize(`${userName}'s Result from the \nBig Five Personality Test \n(Developed by NokHei)`, 180);
     
+    // Calculate the height occupied by the title
+    const titleHeight = titleLines.length * 7;
+    
+    // Render the title
+    pdf.text(titleLines, 10, yPos);
+    yPos += titleHeight + 5;
+    
+    // Date
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
     const now = new Date();
     const testDate = now.toLocaleDateString('en-GB', { 
         day: 'numeric', 
         month: 'long', 
         year: 'numeric' 
     });
-    pdf.setFontSize(10);
-    pdf.setFont("helvetica", "normal");
-    pdf.text(`Test Date: ${testDate}`, 10, 25);
+    pdf.text(`Test Date: ${testDate}`, 10, yPos);
+    yPos += 10;
     
-    // Trait Scores
+    // Trait Score Title
     pdf.setFontSize(12);
     pdf.setFont("helvetica", "bold");
-    pdf.text("Trait Scores:", 10, 40);
+    pdf.text("Trait Scores:", 10, yPos);
+    yPos += 10;
     
+    // Trait Score List
     pdf.setFont("helvetica", "normal");
     traitEn.forEach((t, i) => {
         const score = window.myChart.data.datasets[0].data[i];
         const percentage = (score / 5 * 100).toFixed(1);
-        pdf.text(`${t}: ${percentage}%`, 10, 50 + i * 10);
+        pdf.text(`${t}: ${percentage}%`, 10, yPos);
+        yPos += 7;
     });
     
     // ExtraInfo
-    const info = document.getElementById("extraInfo").innerText;
-    pdf.text(info, 10, 110);
+    const info = document.getElementById("extraInfo").dataset.english || "";
+    yPos += 5;
+    pdf.text(info, 10, yPos);
+    yPos += 10;
     
-    // Create temp. canvas for export
+    // Create a temporary canvas to export charts
     const canvas = document.getElementById('resultsChart');
     const exportCanvas = document.createElement('canvas');
-    const size = Math.min(canvas.width, canvas.height);
+    const size = 700;
     exportCanvas.width = size;
     exportCanvas.height = size;
     const ctx = exportCanvas.getContext('2d');
     
-    // Force it to use the light mode bg colour
+    // Force light mode bg styling
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
     
-    // Temp. clone the chart and force it to use the light mode style
+    // Temporarily clone the chart and force light mode styling
     const tempChart = new Chart(ctx, {
         type: 'radar',
         data: {
@@ -873,30 +897,42 @@ async function generatePDF() {
     // Wait for the chart to render
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Draw temp. canvas
+    // Render a temporary canvas
     tempChart.draw();
     
-    // Convert to imgae URL
+    // Convert to image URL
     const imageData = exportCanvas.toDataURL('image/png', 1.0);
     
-    // Add chart to PDF
+    // Add chart to PDF (dynamically adjust according to current content position)
     const imgWidth = 120;
     const imgHeight = 120;
     pdf.addImage(imageData, 'PNG', 
         (pdf.internal.pageSize.getWidth() - imgWidth) / 2,
-        140, 
+        yPos + 10, // Position according to current yPos
         imgWidth, 
         imgHeight);
     
-    // Temp. destroy chart
+    // Destroy the temporary chart
     tempChart.destroy();
     
-    // PDF footer
+    // PDF Footer
+    const footerHeight = 12;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Footer BlackBg
+    pdf.setFillColor(0, 0, 0);
+    pdf.rect(0, pageHeight - footerHeight, pageWidth, footerHeight, 'F');
+
+    // Footer WhiteText
     pdf.setFontSize(8);
-    pdf.setTextColor(100);
-    pdf.text("Generated by BIG5 Personality Test - https://nokhei.github.io/bigfivetest", 105, 290, { align: 'center' });
-    
-    pdf.save(`big5_result_${userName}.pdf`);
+    pdf.setTextColor(255, 255, 255);
+    pdf.text("Generated by BIG5 Personality Test - https://nokhei.github.io/bigfivetest", 
+        pageWidth / 2, 
+        pageHeight - 3, 
+        { align: 'center' });
+
+    pdf.save(`big5_result_of_${userName}.pdf`);
 }
 
 function saveToHistory(resultObj, introvert, extravert) {
