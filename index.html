@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大五人格測驗 BIG5 Test</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div id="startScreen">
+    <h1 id="title">BIG5 <ruby>大五性格測驗<rp>(</rp><rt>daai6 ng6 sing3 gaak3 cak1 jim6</rt><rp>)</rp> </ruby></h1>
+    <div>
+    <div id="startScreenHeart"></div>
+  </div>
+    <p id="description">一個測試你個性特徵嘅測驗<i>！</i></p>
+    <p id="description">Get ready for an exciting journey of self-discovery<i>!</i><br>This is a simple test that will help you understand your personality traits like never before.</p>
+    <h3 id="description">By @nokhei / @nok6hei1 <a href="https://github.com/nokhei">(GitHub)</a> <a href="https://instagram.com/nok6hei1">(Instagram)</a></h3>
+    <button id="startBtn">開始 Start</button>
+  <div>
+    <a href="https://github.com/nokhei/nokhei.github.io/tree/main/bigfivetest" target="_blank" class="button-text">About this Project</a>
+  </div>
+</div>
+
+  <div id="app">
+    <header>
+      <h1>BIG5 <ruby>大五性格測驗<rp>(</rp><rt>daai6 ng6 sing3 gaak3 cak1 jim6</rt><rp>)</rp> </ruby></h1>
+      <select id="langSelector">
+        <option value="zh-HK">🌏Lang: 粵語（香港）</option>
+        <option value="zh-TW">官話（正體中文）</option>
+        <option value="en-UK">English (UK)</option>
+      </select>
+      <button id="themeToggle">🌗Light/Dark Mode</button>
+    </header>
+
+    <main>
+      <div id="progressContainer">
+      <div id="progress"></div>
+      <span id="progressText">0%</span>
+      </div>
+      <div id="pagination"></div>
+      <section id="test"></section>
+      <button id="submitBtn">查看結果 Result</button>
+
+      <section id="results" style="display:none">
+        <h2>測驗結果 Results</h2>
+        <canvas id="resultsChart"></canvas>
+        <div id="extraInfo"></div>
+        <button id="pdfBtn">下載結果 PDF</button>
+        <input type="text" id="userName" placeholder="輸入暱稱 Name👀" style="margin-left: 10px;">
+            <div class="trait-result">
+<div class="card-container" id="openness-card">
+  <div class="card3d">
+    <div class="card-front" id="openness-summary"></div>
+    <div class="card-back" id="openness-description"></div>
+  </div>
+</div>
+<div class="card-container" id="conscientiousness-card">
+  <div class="card3d">
+    <div class="card-front" id="conscientiousness-summary"></div>
+    <div class="card-back" id="conscientiousness-description"></div>
+  </div>
+</div>
+<div class="card-container" id="extraversion-card">
+  <div class="card3d">
+    <div class="card-front" id="extraversion-summary"></div>
+    <div class="card-back" id="extraversion-description"></div>
+  </div>
+</div>
+<div class="card-container" id="agreeableness-card">
+  <div class="card3d">
+    <div class="card-front" id="agreeableness-summary"></div>
+    <div class="card-back" id="agreeableness-description"></div>
+  </div>
+</div>
+<div class="card-container" id="neuroticism-card">
+  <div class="card3d">
+    <div class="card-front" id="neuroticism-summary"></div>
+    <div class="card-back" id="neuroticism-description"></div>
+  </div>
+</div>
+</div>
+      </section>
+
+      <section id="history">
+        <h2>測驗結果紀錄 History</h2>
+        <div id="historyList"></div>
+        <button id="clearHistoryBtn">清除紀錄 Clear</button>
+      </section>
+    </main>
+  </div>
+
+  <footer id="pageFooter">
+    <!-- 3D Heart Canvas -->
+    <div id="footerHeart3D">
+        <div class="floating-particles"></div>
+        <div class="interaction-hint">✨ 3D Interactive</div>
+    </div>
+
+    <!-- About Me Section -->
+    <div class="about-wrap">
+    <div class="about"><h2>About the Developer</h2></div>
+    <div class="card">
+    <div class="line-1"></div>
+    <div class="line-2"></div>
+    <div class="dev-info">
+      <div class="avatar-wrap">
+        <a href="https://github.com/nokhei" target="_blank">
+          <img src="assets/avatar.png" alt="profile" class="avatar">
+        </a>
+        <div class="line-3"></div>
+      </div>
+      <div class="names">
+        <span class="fullname">NokHei</span>
+        <span class="username">@nokhei / @nok6hei1</span>
+        <p><a href="mailto:nokhei@tuta.io">Email</a> ｜ <a href="https://instagram.com/nok6hei1">Insta DM</a> ｜ <a href="https://www.google.com/maps/place/Hong+Kong/">Hongkong-based</a></p>
+      </div>
+      <p>Version 1.0.0 ｜ Help with <a href="mailto:nokhei@tuta.io">translation</a> to other languages/giving feedback (contact by email)</p>
+    </div>
+    <div id="learn-more-wrap">
+  <div class="learn-more">
+    <span class="circle" aria-hidden="true">
+      <span class="icon arrow"></span>
+    </span>
+    <a href="https://github.com/nokhei/nokhei.github.io/tree/main/bigfivetest" target="_blank" class="button-text">Learn More</a>
+  </div>
+
+  <div class="footer-note">
+    <p>This project is just for fun and not professionally validated; it should not be used as a formal assessment tool.</p>
+    <p>This project is licensed under <a href="license.txt">CC BY SA 4.0</a> — please credit @nokhei/@nok6hei1.</p>
+  </div>
+</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
