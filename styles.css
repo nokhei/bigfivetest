@@ -72,34 +72,83 @@
         font-weight: 600;
     }
 
+.trait-result {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 70px;
+  margin: 2rem 0;
+}
+
 .card-container {
   perspective: 1000px;
-  display: inline-block;
-  margin: 1rem;
-}
-.card3d {
   width: 300px;
   height: 200px;
+  margin: 0;
+}
+
+.card3d {
+  width: 100%;
+  height: 100%;
   transition: transform 0.6s;
   transform-style: preserve-3d;
   position: relative;
 }
-.card-container:hover .card3d {
-  transform: rotateY(180deg);
-}
+
 .card-front, .card-back {
   position: absolute;
-  backface-visibility: hidden;
   width: 100%;
   height: 100%;
+  backface-visibility: hidden;
   padding: 1rem;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgb(94, 138, 180);
   background: linear-gradient(135deg, #c0eaff, #e2c3ff);
   color: black;
 }
+
 .card-back {
   transform: rotateY(180deg);
+}
+
+.card-flip-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.card-container:hover .card3d {
+  transform: rotateY(180deg);
+}
+
+#fas fa-hand-pointer {
+  color: var(--font-color);
+}
+
+/* 暗色模式適配 */
+[data-theme="dark"] .card-flip-hint {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .card-container:hover .card-flip-hint {
+    color: rgba(0, 0, 0, 0.9);
+}
+
+@media (max-width: 768px) {
+  .trait-result {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card-container {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
 }
 
 /* 3D Heart Display */
