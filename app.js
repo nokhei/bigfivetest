@@ -404,11 +404,11 @@ function getCheckmarkColor(value) {
 function getOptionLabel(value) {
     const labels = {
         "zh-HK": {
-            5: "非常啱",
-            4: "有啲啱", 
+            5: "非常貼切",
+            4: "有啲貼切", 
             3: "普通",
-            2: "唔太啱",
-            1: "非常唔啱"
+            2: "唔太貼切",
+            1: "非常唔貼切"
         },
         "zh-TW": {
             5: "非常符合",
