@@ -25,7 +25,7 @@ let responsesByLang = {
     "en-UK": []
 };
 
-// 初始化回答數組
+// Initialise the answer array
 function initResponses() {
     responsesByLang[currentLang] = Array(questions[currentLang].length).fill(null);
 }
@@ -39,12 +39,12 @@ document.getElementById("langSelector")?.addEventListener("change", e => {
     const prevLang = currentLang;
     currentLang = e.target.value;
     
-    // 如果新語言尚未初始化回答數組，則初始化
+    // Initialise the answer array if the new language has not already done so
     if (!responsesByLang[currentLang]) {
         responsesByLang[currentLang] = Array(questions[currentLang].length).fill(null);
     }
     
-    // 保持當前頁面位置，但確保不超過新語言的題目範圍
+    // Keep the current page position, but make sure you don't exceed the number of questions in the new language
     const maxPage = Math.ceil(questions[currentLang].length / pageSize) - 1;
     currentPage = Math.min(currentPage, maxPage);
     
@@ -84,7 +84,7 @@ function ensureThreeJS() {
             controlsScript.onload = resolve;
             document.head.appendChild(controlsScript);
             
-            // Adding OrbitControls
+            // Add OrbitControls
             THREE.OrbitControls = function(object, domElement) {
                 this.object = object;
                 this.domElement = domElement;
@@ -292,7 +292,7 @@ function updateStartScreen() {
 
 function updateProgressBar() {
     const total = questions[currentLang].length;
-    // 使用當前語言的回答數組
+    // Use the current language's answer array
     const answered = responsesByLang[currentLang].filter(r => r !== null).length;
     const percent = (answered / total) * 100;
     
@@ -355,8 +355,12 @@ function renderQuestions() {
         prevPageBtn.innerHTML = `<i class="fas fa-arrow-left"></i> ${currentLang.startsWith("zh") ? "上一頁" : "Previous"}`;
         prevPageBtn.addEventListener("click", () => {
             currentPage--;
-            renderQuestions();
+        renderQuestions();
+        window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
         });
+    });
         buttonContainer.appendChild(prevPageBtn);
     }
 
@@ -366,8 +370,12 @@ function renderQuestions() {
         nextPageBtn.innerHTML = `${currentLang.startsWith("zh") ? "下一頁" : "Next"} <i class="fas fa-arrow-right"></i>`;
         nextPageBtn.addEventListener("click", () => {
             currentPage++;
-            renderQuestions();
+        renderQuestions();
+        window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
         });
+    });
         buttonContainer.appendChild(nextPageBtn);
     }
 
@@ -429,13 +437,13 @@ async function calculateResults() {
     const val = document.querySelector(`input[name='q${i}']:checked`);
     if (!val) return;
     const score = q.reverse ? 6 - Number(val.value) : Number(val.value);
-    // Using traitKeyMap to convert current lang trait to an Eng key
+    // Use traitKeyMap to convert current lang trait to an Eng key
     const englishTrait = traitKeyMap[q.trait];
     scores[englishTrait] = (scores[englishTrait] || 0) + score;
     counts[englishTrait] = (counts[englishTrait] || 0) + 1;
   });
 
-  // Using traitEn ordering to ensure consistant result ordering
+  // Use traitEn ordering to ensure consistant result ordering
   const results = traitEn.map(trait => (scores[trait] || 0) / (counts[trait] || 1));
 
   const resultObj = {
@@ -446,14 +454,14 @@ async function calculateResults() {
     Neuroticism: results[4]
   };
 
-  // Getting introvert / extravert percentage
+  // Get introvert / extravert percentage
   const extraversionKey = "Extraversion";
   const totalPossible = (counts[extraversionKey] || 1) * 5;
   const rawScore = scores[extraversionKey] || 0;
   const extravert = (rawScore / totalPossible * 100).toFixed(1);
   const introvert = (100 - extravert).toFixed(1);
 
-  // Displaying the result
+  // Display the result
   displayResults(resultObj);
   saveToHistory(resultObj, introvert, extravert);
   document.getElementById("extraInfo").innerText = `Introvert: ${introvert}% | Extravert: ${extravert}%`;
@@ -463,7 +471,7 @@ async function calculateResults() {
   document.getElementById("progress").classList.add("active");
   renderHistory();
 
-  // Rendering Chart
+  // Render Chart
   await ensureChartJS();
   const ctx = document.getElementById('resultsChart').getContext('2d');
   if (window.myChart) window.myChart.destroy();
@@ -474,28 +482,49 @@ async function calculateResults() {
   window.myChart = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: labelSet,  // Showing label refer to the lang
-      datasets: [{
-        label: "BIG5 Result",
-        data: radarData,
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        pointBackgroundColor: "rgba(54, 162, 235, 1)"
-      }]
+        labels: labelSet,
+        datasets: [{
+            label: "BIG5 Result",
+            data: radarData,
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            pointBackgroundColor: "rgba(54, 162, 235, 1)"
+        }]
     },
     options: {
-      responsive: true,
-      scales: {
-        r: {
-          min: 0,
-          max: 5,
-          ticks: {
-            stepSize: 1
-          }
+        responsive: true,
+        scales: {
+            r: {
+                min: 0,
+                max: 5,
+                ticks: {
+                    stepSize: 1,
+                    backdropColor: 'transparent'
+                },
+                angleLines: {
+                    color: '#888'
+                },
+                grid: {
+                    color: '#888'
+                },
+                pointLabels: {
+                    color: function(context) {
+                        return document.body.dataset.theme === 'dark' ? '#f1f1f1' : '#333';
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: function(context) {
+                        return document.body.dataset.theme === 'dark' ? '#f1f1f1' : '#333';
+                    }
+                }
+            }
         }
-      }
     }
-  });
+});
 }
 
 function getResultText(trait, score, lang = currentLang) {
@@ -637,7 +666,7 @@ async function renderHeart(containerId, autoRotate = true) {
         container.appendChild(tipText);
     }
 
-    // Building scene, camera, renderer
+    // Build scene, camera, renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -737,7 +766,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     createFloatingParticles();
 });
 
-// Creating floating particles effect
+// Create floating particles effect
 function createFloatingParticles() {
     const particleContainer = document.querySelector('.floating-particles');
     if (!particleContainer) return;
@@ -756,7 +785,6 @@ async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
     
-    // 保留原有文本內容
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "bold");
     const userName = document.getElementById("userName").value || "Anonymous";
@@ -772,7 +800,7 @@ async function generatePDF() {
     pdf.setFont("helvetica", "normal");
     pdf.text(`Test Date: ${testDate}`, 10, 25);
     
-    // 分數表格
+    // Trait Scores
     pdf.setFontSize(12);
     pdf.setFont("helvetica", "bold");
     pdf.text("Trait Scores:", 10, 40);
@@ -784,48 +812,86 @@ async function generatePDF() {
         pdf.text(`${t}: ${percentage}%`, 10, 50 + i * 10);
     });
     
-    // 額外信息
+    // ExtraInfo
     const info = document.getElementById("extraInfo").innerText;
     pdf.text(info, 10, 110);
     
-    // 添加雷達圖 - 使用更穩定的方法
-    try {
-        const canvas = document.getElementById('resultsChart');
-        
-        // 創建一個新的canvas用於導出，調整為正方形比例
-        const exportCanvas = document.createElement('canvas');
-        const size = Math.min(canvas.width, canvas.height);
-        exportCanvas.width = size;
-        exportCanvas.height = size;
-        const ctx = exportCanvas.getContext('2d');
-        
-        // 設置白色背景
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
-        
-        // 計算居中繪製位置
-        const offsetX = (size - canvas.width) / 2;
-        const offsetY = (size - canvas.height) / 2;
-        ctx.drawImage(canvas, offsetX, offsetY);
-        
-        // 轉換為圖像URL
-        const imageData = exportCanvas.toDataURL('image/png', 1.0);
-        
-        // 添加圖表到PDF (調整為更正方形的比例)
-        const imgWidth = 120;  // 減小寬度
-        const imgHeight = 120; // 保持與寬度相同
-        pdf.addImage(imageData, 'PNG', 
-            (pdf.internal.pageSize.getWidth() - imgWidth) / 2, // 水平居中
-            140, 
-            imgWidth, 
-            imgHeight);
-        
-    } catch (error) {
-        console.error("Error adding chart to PDF:", error);
-        pdf.text("Chart could not be included", 15, 130);
-    }
+    // Create temp. canvas for export
+    const canvas = document.getElementById('resultsChart');
+    const exportCanvas = document.createElement('canvas');
+    const size = Math.min(canvas.width, canvas.height);
+    exportCanvas.width = size;
+    exportCanvas.height = size;
+    const ctx = exportCanvas.getContext('2d');
     
-    // 頁腳
+    // Force it to use the light mode bg colour
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+    
+    // Temp. clone the chart and force it to use the light mode style
+    const tempChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: window.myChart.data.labels,
+            datasets: [{
+                ...window.myChart.data.datasets[0],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                pointBackgroundColor: 'rgba(54, 162, 235, 1)'
+            }]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                r: {
+                    min: 0,
+                    max: 5,
+                    ticks: {
+                        stepSize: 1,
+                        backdropColor: 'transparent',
+                        color: '#333'
+                    },
+                    angleLines: {
+                        color: 'rgba(100, 100, 100, 0.5)'
+                    },
+                    grid: {
+                        color: 'rgba(100, 100, 100, 0.5)'
+                    },
+                    pointLabels: {
+                        color: '#333'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+    
+    // Wait for the chart to render
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Draw temp. canvas
+    tempChart.draw();
+    
+    // Convert to imgae URL
+    const imageData = exportCanvas.toDataURL('image/png', 1.0);
+    
+    // Add chart to PDF
+    const imgWidth = 120;
+    const imgHeight = 120;
+    pdf.addImage(imageData, 'PNG', 
+        (pdf.internal.pageSize.getWidth() - imgWidth) / 2,
+        140, 
+        imgWidth, 
+        imgHeight);
+    
+    // Temp. destroy chart
+    tempChart.destroy();
+    
+    // PDF footer
     pdf.setFontSize(8);
     pdf.setTextColor(100);
     pdf.text("Generated by BIG5 Personality Test - nokhei.github.io", 105, 290, { align: 'center' });
