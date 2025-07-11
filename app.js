@@ -466,7 +466,7 @@ const introvert = (100 - extravert).toFixed(1);
 // Display the result
 displayResults(resultObj);
 saveToHistory(resultObj, introvert, extravert);
-const extraInfoText = `${currentLang.startsWith("zh") ? "內向" : "Introvert"}: ${introvert}% | ${currentLang.startsWith("zh") ? "外向" : "Extravert"}: ${extravert}%`;
+const extraInfoText = `${currentLang.startsWith("zh") ? "內向百分比" : "Introversion%"}: ${introvert}% | ${currentLang.startsWith("zh") ? "外向百分比" : "Extraversion%"}: ${extravert}%`;
 const extraInfoTextEn = `Introvert: ${introvert}% | Extravert: ${extravert}%`;
   document.getElementById("extraInfo").innerText = extraInfoText;
   document.getElementById("extraInfo").dataset.english = extraInfoTextEn;
