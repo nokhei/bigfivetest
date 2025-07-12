@@ -380,12 +380,14 @@ function renderQuestions() {
     }
 
     if ((currentPage + 1) * pageSize >= questions[currentLang].length) {
-        const submitBtn = document.createElement("button");
-        submitBtn.className = "nav-button submit-button";
-        submitBtn.innerHTML = `<i class="fas fa-paper-plane"></i> ${currentLang.startsWith("zh") ? "提交" : "Submit"}`;
-        submitBtn.addEventListener("click", calculateResults);
-        buttonContainer.appendChild(submitBtn);
-    }
+    const submitBtn = document.createElement("button");
+    submitBtn.className = "nav-button submit-button";
+    submitBtn.innerHTML = `<i class="fas fa-paper-plane"></i> ${currentLang.startsWith("zh") ? "提交" : "Submit"}`;
+    submitBtn.addEventListener("click", calculateResults);
+    submitBtn.addEventListener("click", createConfetti);
+    
+    buttonContainer.appendChild(submitBtn);
+}
 
     container.appendChild(buttonContainer);
     updateProgressBar();
@@ -592,7 +594,7 @@ function getResultText(trait, score, lang = currentLang) {
         },
         "Conscientiousness": {
             "high": {
-                "en-UK": "Your score on Conscientiousness is high, indicating you are organized and self-disciplined.",
+                "en-UK": "Your score on Conscientiousness is high, indicating you are organised and self-disciplined.",
                 "zh-HK": "你嘅認真盡責度（Conscientiousness）得分偏高，代表你有規律、有責任感。",
                 "zh-TW": "你的認真盡責度（Conscientiousness）得分偏高，表示你做事有條理、有自律。"
             },
@@ -602,7 +604,7 @@ function getResultText(trait, score, lang = currentLang) {
                 "zh-TW": "你的認真盡責度（Conscientiousness）得分偏低，表示你隨和不拘小節。"
             },
             "description": {
-                "en-UK": `Conscientiousness is about being disciplined and reliable. High scorers are focused, responsible and plan ahead, while low scorers may be spontaneous and fun but sometimes disorganized.`,
+                "en-UK": `Conscientiousness is about being disciplined and reliable. High scorers are focused, responsible and plan ahead, while low scorers may be spontaneous and fun but sometimes disorganised.`,
                 "zh-HK": `認真盡責度講緊你幾有責任感。得分高代表你做事有規劃、認真；低分就可能比較隨性，冇咁守規則。`,
                 "zh-TW": `認真盡責度旨在衡量你做事是否有計畫與認真。高分者注重目標與紀律；低分者則較即興與自由。`
             }
@@ -787,6 +789,114 @@ function createFloatingParticles() {
     }
 }
 
+function createConfetti() {
+            // Enhanced color palette that matches the site's gradient theme
+            const colors = [
+                '#667eea', '#764ba2', '#ff6b6b', '#4ecdc4', 
+                '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b',
+                '#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e',
+                '#00b894', '#00cec9', '#e84393', '#fd79a8'
+            ];
+            
+            const confettiCount = 200; // More confetti for better effect
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Enhanced random properties
+                const size = Math.random() * 12 + 4; // Varied sizes
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const angle = Math.random() * Math.PI * 2; // Full circle spread
+                const velocity = Math.random() * 8 + 6; // Varied speeds
+                const gravity = Math.random() * 0.5 + 0.3; // Gravity effect
+                const rotationSpeed = Math.random() * 10 + 5; // Rotation speed
+                
+                // Different shapes for variety
+                const shapeType = Math.random();
+                if (shapeType < 0.4) {
+                    confetti.classList.add('circle');
+                } else if (shapeType < 0.7) {
+                    confetti.classList.add('triangle');
+                    confetti.style.borderBottomColor = color;
+                } else if (shapeType < 0.9) {
+                    confetti.classList.add('star');
+                    confetti.style.backgroundColor = color;
+                } else {
+                    // Rectangle (default)
+                    confetti.style.backgroundColor = color;
+                }
+                
+                // Set initial position at center
+                confetti.style.left = `${centerX}px`;
+                confetti.style.top = `${centerY}px`;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.position = 'fixed';
+                confetti.style.zIndex = '9999';
+                confetti.style.transformOrigin = 'center center';
+                
+                // Add subtle shadow for depth
+                confetti.style.boxShadow = `0 2px 6px rgba(0,0,0,0.2)`;
+                
+                document.body.appendChild(confetti);
+                
+                // Enhanced animation with realistic physics
+                let progress = 0;
+                let rotation = 0;
+                const duration = 3000; // 3 seconds for longer effect
+                const startTime = Date.now();
+                
+                // Initial velocity components
+                let vx = Math.cos(angle) * velocity;
+                let vy = Math.sin(angle) * velocity;
+                let x = centerX;
+                let y = centerY;
+                
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    progress = elapsed / duration;
+                    
+                    if (progress < 1) {
+                        // Apply physics
+                        const deltaTime = 16; // Assume 60fps
+                        
+                        // Update position with velocity
+                        x += vx * (deltaTime / 16);
+                        y += vy * (deltaTime / 16);
+                        
+                        // Apply gravity
+                        vy += gravity * (deltaTime / 16);
+                        
+                        // Air resistance
+                        vx *= 0.99;
+                        vy *= 0.99;
+                        
+                        // Update rotation
+                        rotation += rotationSpeed * (deltaTime / 16);
+                        
+                        // Apply position and effects
+                        confetti.style.left = `${x}px`;
+                        confetti.style.top = `${y}px`;
+                        confetti.style.transform = `rotate(${rotation}deg) scale(${1 - progress * 0.5})`;
+                        confetti.style.opacity = Math.max(0, 1 - progress);
+                        
+                        // Continue animation
+                        requestAnimationFrame(animate);
+                    } else {
+                        confetti.remove();
+                    }
+                }
+                
+                // Start animation with slight delay for wave effect
+                setTimeout(() => {
+                    requestAnimationFrame(animate);
+                }, i * 2); // Staggered launch
+            }
+        }
+        
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
@@ -989,8 +1099,12 @@ function clearHistory() {
 }
 
 // EventListener
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("submitBtn")?.addEventListener("click", calculateResults);
+    document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("submitBtn")?.addEventListener("click", function(e) {
+    console.log("Submit button clicked");
+    createConfetti();
+    calculateResults();
+    });
     document.getElementById("pdfBtn")?.addEventListener("click", generatePDF);
     document.getElementById("clearHistoryBtn")?.addEventListener("click", clearHistory);
     document.getElementById("langSelector")?.addEventListener("change", e => {
@@ -1004,7 +1118,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const isDark = document.body.dataset.theme === "dark";
         document.body.dataset.theme = isDark ? "light" : "dark";
     });
-
+    const submitBtn = document.getElementById("submitBtn");
+    if (submitBtn) {
+        submitBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            console.log("Submit clicked - creating confetti");
+            createConfetti();
+            calculateResults();
+        });
+    } else {
+        console.error("Submit button not found!");
+    }
     renderQuestions();
     renderHistory();
 });

@@ -1,83 +1,257 @@
 # Big Five Personality Test Website 大五性格測驗網站
-
 ## English
-This is a Big Five Personality Test website is designed to help users discover their personality traits through a simple and engaging test.
+A modern, interactive Big Five Personality Test website designed to help users discover their personality traits through a scientifically validated psychological model. The test measures the five key dimensions of personality: Openness, Conscientiousness, Extraversion, Agreeableness and Neuroticism (OCEAN). It also shows the introversion/extraversion percentage.
 
-### Features
-- **Multilingual Support**: Available in Cantonese (Hong Kong), Mandarin Chinese (Traditional), and English (UK).
-- **Dark Mode/Light Mode Support**: Switch between light/dark modes at any time, just like no one would turn on light mode in discord.
-- **User-Friendly Interface**: Clear navigation for starting the test, viewing results, and downloading the simple PDF report.
-- **Dynamic Results**: Visual representation of results through a radar (pantagonal) chart, with detailed descriptions of each personality trait.
-- **User History**: Ability to auto save and view past results.
-- **Introversion/extraversion Percentage**: In addition to the five factors, OCEAN, your introversion/extraversion percentage is calculated to show how much you enjoy socialising.
-- **Responsive Design**: Optimized for both desktop and mobile devices.
+### Core Features
+#### 1. Comprehensive Personality Assessment
+- **OCEAN Model Implementation**:
+  - 5-point Likert scale responses (1-5)
+  - Reverse-scored items to prevent response bias
+  - Normalised scoring (0-5 scale with percentage conversion)
 
-### How to Use
- 1. Click the “Start” button to start the test.
- 2. Answer the questions as directed.
- 3. You can view the result after submission, and you can download a simple PDF report.
- 4. You can enter your name/nickname and the PDF report will show it.
- 5. When you are bored, you can play with the 3D heart shape in the footer.
+#### 2. Multi-language System
+- **Complete Localisation**:
+  - Cantonese (Hong Kong) with colloquial expressions
+  - Mandarin Chinese (Traditional) version
+  - Englis (UK) localisation
+  - Language-specific result interpretations
+- **Dynamic Language Switching**:
+  - Preserves answers when switching languages
+  - Automatic UI text updates
+  - Language-specific formatting
 
-### Help Improve the Project
-- Translate into more languages.
-- Provide feedback/propose new features.
-By opening an issue on this GitHub repository or contact the developer by [email](mailto:nokhei@tuta.io).
+#### 3. Interactive Visualisations
+- **3D Elements**:
+  - Interactive heart model with OrbitControls
+    - Metallic material with realistic lighting
+    - Auto-rotation with manual override
+    - Mobile touch support
+  - Floating particle animations
+  - Confetti celebration effects
+- **Data Visualisation**:
+  - Radar chart with dynamic theming
+  - Responsive design adapts to screen sise
+  - Accessibility-friendly colour schemes
 
-### Developer Info
- - **Developer**: NokHei
- - **GitHub**: [@nokhei](https://github.com/nokhei)
- - **Instagram**: [@nok6hei1](https://instagram.com/nok6hei1)
- - **Email**: [nokhei@tuta.io](mailto:nokhei@tuta.io)
+#### 4. User Experience Features
+- **Progress Tracking**:
+  - Animated progress bar with shine effect
+  - Percentage completion indicator
+  - Hover-to-view details
+- **Question Navigation**:
+  - Paginated display (10 questions/page)
+  - Smooth scroll transitions
+  - Previous/Next buttons with icons
+- **Result Presentation**:
+  - Flip-card design for trait explanations
+  - Front: Summary statement
+  - Back: Detailed description
+  - Visual hint for interactive elements
+
+#### 5. Data Management
+- **Test History**:
+  - Stores last 10 test results
+  - Includes timestamp and all scores
+  - Clear history functionality
+- **PDF Export**:
+  - Customisable with username
+  - Includes radar chart image
+  - Professional formatting with footer
+  - Dark/light mode adaptation
+
+#### 6. Theme System
+- **Dark/Light Mode**:
+  - Toggle button in header
+  - Automatic chart theming
+  - CSS variable-based implementation
+  - Persists across pages
+- **Dynamic Styling**:
+  - Answer options change colour based on selection
+  - Button hover effects
+  - Responsive typography
+
+### Frontend Architecture
+- **Modular JavaScript**:
+  - app.js: Main application logic
+  - questions.js: Question data
+  - Event-driven design
+- **Performance Optimisations**:
+  - Lazy loading of heavy libraries
+  - RequestAnimationFrame for animations
+  - Efficient DOM updates
+
+#### Dependencies
+```mermaid
+graph LR
+    subgraph Frontend
+        A[Main App] --> B[UI Components]
+        A --> C[State Management]
+    end
+    
+    subgraph Core Libraries
+        B --> D[Three.js]
+        B --> E[Chart.js]
+        C --> F[LocalStorage]
+    end
+    
+    subgraph PDF Generation
+        A --> G[jsPDF]
+        G --> H[html2canvas]
+    end
+    
+    subgraph Assets
+        B --> I[Font Awesome]
+        B --> J[Google Fonts]
+    end
+    
+    D --> K[3D Heart]
+    E --> L[Radar Chart]
+    F --> M[Test History]
+```
+
+#### Browser Compatibility & RWD
+- Succuessfully tested on:
+  - Chrome, Egde, Firefox, Safari
+- Mobile responsive:
+  - Adapting to screen size with touch-friendly controls and readable typography
+
+### Contribution
+Welcome contributions in:
+- Additional language translations
+- Improved question sets
+- Enhanced visualisation options
+- Accessibility improvements
+Please submit issues, pull requests through GitHub or contact the developer by [email](mailto:nokhei@tuta.io).
 
 ### License
-The project is licensed under [CC BY SA 4.0](license.txt), remember to tag [@nokhei](https://github.com/nokhei)/[@nok6hei1](https://instagram.com/nok6hei1) when referencing/sharing/forking.
-
-### Thanks to
-The project utilizes several JavaScript libraries and functions to enhance the user experience and functionality. Here are the key JavaScript components used:
-- Chart.js: This library is used to create dynamic radar charts that visually represent the results of the personality test.
-- jsPDF: This library is used to generate downloadable PDFs, providing users with a convenient way to save their results.
-- Html2canvas: This library captures the content of the webpage, converts it into a canvas element and places it in the PDF, allowing users to take screenshots of the results.
-- Three.js: This library is used for rendering the 3D heart animations, adding engaging and interactive visual elements to the site.
+CC BY-SA 4.0 - Must credit [@nokhei](https://github.com/nokhei)/[@nok6hei1](https://instagram.com/nok6hei1) when sharing or modifying this project.
 
 ---
 
 ## 廣州話/粵語（香港）Cantonese (Hong Kong)
-呢個網站係一個Big5（大五）性格測驗，可以幫助使用者透過一個簡單而有趣嘅測驗去發掘自身嘅性格特徵。
+現代化、互動性嘅 Big5（大五）性格測驗網站，基於科學驗證嘅心理模型，幫助使用者了解自己嘅性格特徵。測驗會評估五個主要性格維度：經驗開放度、認真盡責度、外向度、親和度同情緒不穩定度（OCEAN），結果仲會有埋內向/外向Percentage。
 
-### 特別功能
-- **多語言支持**：提供粵語（香港）、官話（正體中文）同埋英語（英國）版本。
-- **暗模式/光模式支援**：隨時切換光暗模式，就好似冇人會喺 discord 度開光模式一樣。
-- **使用者友善介面**：清晰指引，方便使用者開始測驗、睇結果同下載一份簡單嘅 PDF 報吿。
-- **動態結果**：透過雷達圖（五邊形圖）呈現視覺化結果，提供每一個性格特徵嘅詳細描述。
-- **使用者歷史紀錄**：自動儲存過去測驗結果，方便你睇返。
-- **內向/外向百分比**：除咗 OCEAN 呢五個因素之外，仲會計埋你嘅內向/外向百分比，顯示出你有幾咁鍾意社交。
-- **響應式設計**：適合桌面同電話設備使用。
+### 核心功能
+#### 1. 全面性格評估
+- **OCEAN模型實現**：
+  - 五分李克特量表（1-5 分）
+  - 包含反向計分項目防止偏差
+  - 標準化評分（0-5 分制轉換百分比）
 
-### 使用方法
-1. 撳「開始 Start」掣開始測驗。
-2. 按照指示答問題。
-3. 提交咗之後可以睇結果，而且可以下載一份簡單嘅 PDF 報吿落嚟。
-4. 使用者可以輸入名/暱稱，PDF報吿會顯示返個名。
-5. 無聊嗰陣可以玩下 footer 嘅 3D 心形。
+#### 2. 多語言系統
+- **完整本地化**：
+  - 地道香港粵語版本
+  - 正體中文版本
+  - 英式英語版本
+  - 語言專屬結果解釋
+- **動態語言切換**：
+  - 切換語言保留答案
+  - 自動更新界面文字
+  - 語言專屬格式設定
 
-### 改進
-- 繙譯成更加多語言
-- 提供意見 / 提出新功能
-喺呢個 GitHub repository 開一個 issue，又或者 send 封 email 畀 [nokhei@tuta.io](mailto:nokhei@tuta.io) 就得。
+#### 3. 互動可視化
+- **3D元素**：
+  - 可互動心形模型：
+    - 金屬材質、真實光影
+    - 自動旋轉、手動控制
+    - 支援電話觸控
+  - 浮動粒子動畫
+  - 彩色碎紙慶祝效果
+- **數據可視化**：
+  - 支援主題切換嘅雷達圖
+  - 適應屏幕大小
+  - 無障礙顏色方案
 
-### 開發者資料
-- **開發者**：諾曦 NokHei
-- **GitHub**：[@nokhei](https://github.com/nokhei)
-- **Instagram**：[@nok6hei1](https://instagram.com/nok6hei1)
-- **Email**：[nokhei@tuta.io](mailto:nokhei@tuta.io)
+#### 4. 使用者體驗功能
+- **進度追蹤**：
+  - 閃光動畫進度條
+  - 完成百分比顯示
+  - 懸停查看詳情
+- **問題導航**：
+  - 分頁顯示（每頁 10 題）
+  - 平滑滾動過渡
+  - 帶有圖標嘅上一頁/下一頁按鈕
+- **結果展示**：
+  - 翻轉卡片設計
+  - 正面：特質摘要
+  - 背面：詳細描述
+  - 互動元素視覺提示
+
+#### 5. 數據管理
+- **測驗紀錄**：
+  - 儲存最近 10 次結果
+  - 包含時間戳同所有分數
+  - 清除紀錄功能
+- **PDF匯出**：
+  - 可以輸入使用者名稱
+  - 包括雷達圖圖片
+  - 專業格式設定，帶有 footer
+  - 適應光暗模式
+
+#### 6. 主題系統
+- **光/暗模式**：
+  - 頁首切換按鈕
+  - 圖表自動適應主題
+  - 基於 CSS 變數實現
+  - 跨頁面持久化
+- **動態樣式**：
+  - 選項根據選擇變色
+  - 按鈕懸停效果
+  - 響應式設計排版
+
+### 前端架構
+- **模組化JavaScript**：
+  - app.js：主要應用邏輯
+  - questions.js：問題數據
+  - 事件驅動設計
+- **性能改善**：
+  - 延遲加載 Libraries
+  - 使用 RequestAnimationFrame 處理動畫
+  - 高效率 DOM 更新
+
+#### 依賴關係
+```mermaid
+graph LR
+    subgraph Frontend
+        A[Main App] --> B[UI Components]
+        A --> C[State Management]
+    end
+    
+    subgraph Core Libraries
+        B --> D[Three.js]
+        B --> E[Chart.js]
+        C --> F[LocalStorage]
+    end
+    
+    subgraph PDF Generation
+        A --> G[jsPDF]
+        G --> H[html2canvas]
+    end
+    
+    subgraph Assets
+        B --> I[Font Awesome]
+        B --> J[Google Fonts]
+    end
+    
+    D --> K[3D Heart]
+    E --> L[Radar Chart]
+    F --> M[Test History]
+```
+
+#### 瀏覽器兼容性、RWD
+- 成功測試咗喺：
+  - Chrome、Edge、Firefox、Safari
+
+- 響應式設計：
+  - 適應屏幕尺寸、觸控友善控制、易讀排版
+
+### 貢獻
+歡迎貢獻：
+- 繙譯做更加多語言
+- 改善測驗問題
+- 加強可視化選項
+- 無障礙改善
+歡迎透過 GitHub 提交 issue、pull request 或者 [send email](mailto:nokhei@tuta.io) 貢獻。
 
 ### 授權
-呢個 project 用 [CC BY SA 4.0](license.txt) 授權，引用/Share/Fork嗰陣記得 tag 返 [@nokhei](https://github.com/nokhei)/[@nok6hei1](https://instagram.com/nok6hei1)。
-
-### 鳴謝
-呢個 project 用咗幾個 JavaScript libraries 同 functions，去提升返使用者體驗同功能。以下係主要用到嘅：
-- Chart.js：用嚟創建動態雷達圖（五邊形圖），視覺化呈現測驗結果。
-- jsPDF：用嚟生成 PDF，方便啲直接以檔案儲存測驗結果。
-- html2canvas：用嚟 capture 網頁內容，並且轉換做畫布元素擺喺 PDF，方便截取測驗結果畫面。
-- Three.js：用嚟 render 3D 心形動畫，透過可互動元素增加網站吸引力。
+CC BY-SA 4.0 - 分享或者修改呢個 project 嗰陣煩請 tag 返 [@nokhei](https://github.com/nokhei)/[@nok6hei1](https://instagram.com/nok6hei1)。
